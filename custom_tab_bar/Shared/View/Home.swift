@@ -37,7 +37,7 @@ struct Home: View {
             }
             
         }
-        .padding(5)
+        .padding()
         .padding(.bottom, 80)
     }
     @ViewBuilder

@@ -10,6 +10,7 @@ import SwiftUI
 struct Detail: View {
     @EnvironmentObject var tabBarViewModel: TabBarViewModel
     var animation: Namespace.ID
+    @State  var showCourse: Bool = false
     var body: some View {
         if let card = tabBarViewModel.detailCard, tabBarViewModel.showDetail {
             VStack(alignment: .leading){
@@ -45,45 +46,61 @@ struct Detail: View {
                     .padding(.leading, 16)
                     .padding(.bottom,16)
                     .foregroundColor(.red.opacity(0.9))
-                    
-                ScrollView(.vertical, showsIndicators: false) {
-                    VStack(alignment: .leading) {
-                        ForEach(1...20, id: \.self){ index in
-                            Button {
-                                
-                            }label: {
-                                HStack{
-                                    Image(systemName: "swift")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 24)
-                                        .padding(.vertical)
-                                        .padding(.horizontal,24)
-                                    
-                                    Text("Lesson \(index)")
-                                        .padding(.trailing, 16)
-                                    Spacer()
-                                    Image(systemName: "play.circle")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 24)
-                                        .padding(.vertical)
-                                        .padding(.horizontal,24)
-                                        
-                                }
-                                .frame(maxWidth: .infinity)
-                                .background(
-                                    .ultraThinMaterial, in: Capsule()
-                                )
-                        
+                    .onAppear{
+                        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(200), execute: {
+                            withAnimation(.easeIn) {
+                                showCourse = true
                             }
-                           
-                            .foregroundColor(.black)
-                          
-                        }
+                        })
                     }
-                }
-                .padding(.horizontal, 16)
+                    .onDisappear{
+                        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(200), execute: {
+                            withAnimation(.easeOut) {
+                                showCourse = false
+                            }
+                        })
+                    }
+                  if showCourse
+                {
+                      ScrollView(.vertical, showsIndicators: false) {
+                          VStack(alignment: .leading) {
+                              ForEach(1...20, id: \.self){ index in
+                                  Button {
+                                      
+                                  }label: {
+                                      HStack{
+                                          Image(systemName: "swift")
+                                              .resizable()
+                                              .aspectRatio(contentMode: .fit)
+                                              .frame(width: 24)
+                                              .padding(.vertical)
+                                              .padding(.horizontal,24)
+                                          
+                                          Text("Lesson \(index)")
+                                              .padding(.trailing, 16)
+                                          Spacer()
+                                          Image(systemName: "play.circle")
+                                              .resizable()
+                                              .aspectRatio(contentMode: .fit)
+                                              .frame(width: 24)
+                                              .padding(.vertical)
+                                              .padding(.horizontal,24)
+                                              
+                                      }
+                                      .frame(maxWidth: .infinity)
+                                      .background(
+                                          .ultraThinMaterial, in: Capsule()
+                                      )
+                              
+                                  }
+                                 
+                                  .foregroundColor(.black)
+                                
+                              }
+                          }
+                      }
+                      .padding(.horizontal, 16)
+                  }
             }
             .ignoresSafeArea()
             .padding(.bottom)
